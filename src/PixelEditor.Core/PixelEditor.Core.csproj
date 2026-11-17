@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Core text translation: the key is the Russian string, the value is English (see CoreText) -->
+    <EmbeddedResource Include="Locales\core.en.json" LogicalName="PixelEditor.Core.Locales.core.en.json" WithCulture="false" />
+  </ItemGroup>
+
+</Project>

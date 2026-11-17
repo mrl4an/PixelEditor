@@ -1,0 +1,176 @@
+﻿<Window x:Class="PixelEditor.App.ChatPipelineDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:PixelEditor.App.Localization"
+        Width="980" Height="700" MinWidth="760" MinHeight="560" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <Grid Margin="18,16,18,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="300"/>
+            <ColumnDefinition Width="16"/>
+            <ColumnDefinition Width="1.15*" MinWidth="340"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{loc:T chat.how_it_works}" TextWrapping="Wrap" Style="{StaticResource MutedText}" Margin="0,0,0,10"/>
+
+        <!-- Left: prompt, editable JSON, validation -->
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="{loc:T chat.what_to_ask}" Style="{StaticResource DialogHeadingText}"/>
+                <RadioButton GroupName="PromptKind" Content="{loc:T chat.kind_image}" ToolTip="{loc:T chat.kind_image.tip}" Margin="0,2"
+                             IsChecked="{Binding PromptKind, Converter={StaticResource EnumBool}, ConverterParameter=Pipeline}"/>
+                <RadioButton GroupName="PromptKind" Content="{loc:T chat.kind_sprite}" ToolTip="{loc:T chat.kind_sprite.tip}" Margin="0,2"
+                             IsChecked="{Binding PromptKind, Converter={StaticResource EnumBool}, ConverterParameter=Sprite}"/>
+                <RadioButton GroupName="PromptKind" Content="{loc:T chat.kind_sheet}" ToolTip="{loc:T chat.kind_sheet.tip}" Margin="0,2"
+                             IsChecked="{Binding PromptKind, Converter={StaticResource EnumBool}, ConverterParameter=Sheet}"/>
+                <!-- sheet kind only: the layout the prompt requires (a template, a frame size and an optional delay), or the current sheet's layout -->
+                <StackPanel Margin="22,4,0,0" Visibility="{Binding ShowLayoutSelector, Converter={StaticResource BoolVisible}}">
+                    <TextBlock Text="{loc:T chat.layout_label}" Style="{StaticResource CaptionText}"/>
+                    <ComboBox Margin="0,2,0,0" ItemsSource="{Binding LayoutChoices}" SelectedItem="{Binding SelectedLayout}" DisplayMemberPath="Name"/>
+                    <Grid Margin="0,6,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="14"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="{loc:T chat.layout_size}" Style="{StaticResource CaptionText}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                <TextBox Width="52" Text="{Binding LayoutWidthText, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="×" Margin="6,0" VerticalAlignment="Center"/>
+                                <TextBox Width="52" Text="{Binding LayoutHeightText, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="{loc:T chat.layout_delay}" Style="{StaticResource CaptionText}"/>
+                            <TextBox Margin="0,2,0,0" Text="{Binding LayoutDelayText, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock Text="{Binding LayoutError}" Style="{StaticResource ErrorText}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                </StackPanel>
+                <TextBlock Margin="22,4,0,0" TextWrapping="Wrap" Style="{StaticResource CaptionText}" Text="{Binding DocumentLayoutText}"
+                           Visibility="{Binding ShowDocumentLayout, Converter={StaticResource BoolVisible}}"/>
+                <TextBlock Margin="22,4,0,0" TextWrapping="Wrap" Style="{StaticResource CaptionText}" Text="{Binding LayoutRuleText}"
+                           Visibility="{Binding HasTargetLayout, Converter={StaticResource BoolVisible}}"/>
+                <Button HorizontalAlignment="Left" Content="{loc:T chat.copy_prompt}" Command="{Binding CopyPromptCommand}" Padding="12,5" Margin="0,8,0,0"/>
+            </StackPanel>
+            <TextBlock Grid.Row="1" Text="{loc:T chat.paste_the_answer}" Style="{StaticResource DialogHeadingText}" Margin="0,14,0,6"/>
+            <TextBox x:Name="Editor" Grid.Row="2" FontFamily="{DynamicResource Font.Mono}" Padding="8,6" AcceptsReturn="True" AcceptsTab="False" TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalContentAlignment="Top"
+                     Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Grid.Row="3" Margin="0,8,0,0">
+                <TextBlock Text="{Binding Status}" TextWrapping="Wrap" Style="{StaticResource SectionTitleText}"/>
+                <ItemsControl ItemsSource="{Binding Messages}" Margin="0,4,0,0" MaxHeight="110">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="0,2,0,0" Style="{StaticResource MutedText}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Grid>
+
+        <!-- Right: before/after, steps, variants -->
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{loc:T chat.before}" Style="{StaticResource DialogHeadingText}"
+                       Visibility="{Binding ShowBefore, Converter={StaticResource BoolVisible}}"/>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="{loc:T chat.after}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource DialogHeadingText}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ShowBefore}" Value="False">
+                        <Setter Property="Grid.Column" Value="0"/>
+                        <Setter Property="Grid.ColumnSpan" Value="3"/>
+                    </DataTrigger>
+                </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <!-- the checkerboard is only under the picture itself: transparency shows where the image has it, not around it -->
+            <Border Grid.Row="1" Grid.Column="0" Background="{DynamicResource Brush.Field}" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1" ClipToBounds="True"
+                    Visibility="{Binding ShowBefore, Converter={StaticResource BoolVisible}}">
+                <Border Background="{DynamicResource Brush.CheckerLarge}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="{Binding Before, Converter={StaticResource PixelBitmap}}" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Uniform"/>
+                </Border>
+            </Border>
+            <Border Grid.Row="1" Grid.Column="2" Background="{DynamicResource Brush.Field}" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1" ClipToBounds="True">
+                <Border.Style>
+                    <Style TargetType="Border">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ShowBefore}" Value="False">
+                        <Setter Property="Grid.Column" Value="0"/>
+                        <Setter Property="Grid.ColumnSpan" Value="3"/>
+                    </DataTrigger>
+                </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Border Background="{DynamicResource Brush.CheckerLarge}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="{Binding After, Converter={StaticResource PixelBitmap}}" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Uniform"/>
+                </Border>
+            </Border>
+            <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding PreviewSummary}" Margin="0,6,0,0" Style="{StaticResource MutedText}" TextWrapping="Wrap"/>
+            <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Margin="0,8,0,0">
+                <Expander>
+                    <Expander.Header>
+                        <TextBlock Text="{loc:T chat.steps_and_checks}" Style="{StaticResource SectionTitleText}"/>
+                    </Expander.Header>
+                    <TextBox IsReadOnly="True" Text="{Binding PreviewDetails, Mode=OneWay}" FontFamily="{DynamicResource Font.Mono}" MaxHeight="110"
+                             VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" BorderThickness="0"/>
+                </Expander>
+                <DockPanel Margin="0,8,0,4">
+                    <Button DockPanel.Dock="Right" Content="{loc:T chat.remove_variant}" Command="{Binding RemoveVariantCommand}" Padding="10,3" Margin="6,0,0,0"/>
+                    <Button DockPanel.Dock="Right" Content="{loc:T chat.add_variant}" Command="{Binding AddVariantCommand}" Padding="10,3"
+                            Visibility="{Binding CanAddVariant, Converter={StaticResource BoolVisible}}"
+                            ToolTip="{loc:T chat.add_variant.tip}"/>
+                    <TextBlock Text="{loc:T chat.variants}" Style="{StaticResource SectionTitleText}" VerticalAlignment="Center"/>
+                </DockPanel>
+                <ListBox ItemsSource="{Binding Variants}" SelectedItem="{Binding SelectedVariant}" MinHeight="96"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Width="84" Margin="2">
+                                <Border Background="{DynamicResource Brush.CheckerLarge}" Height="64" ClipToBounds="True">
+                                    <Image Source="{Binding After, Converter={StaticResource PixelBitmap}}" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Uniform"/>
+                                </Border>
+                                <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Info}" FontSize="{DynamicResource FontSize.Small}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
+            <Button Content="{loc:T chat.save_as_template}" Command="{Binding SaveTemplateCommand}" Padding="12,5" Margin="0,0,16,0"
+                    Visibility="{Binding IsPipeline, Converter={StaticResource BoolVisible}}"/>
+            <Button Content="{Binding SecondaryText}" Command="{Binding ApplySecondaryCommand}" Padding="12,5" Margin="0,0,8,0"
+                    Visibility="{Binding HasSecondary, Converter={StaticResource BoolVisible}}" ToolTip="{Binding SecondaryTip}"/>
+            <Button Content="{Binding ApplyText}" MinWidth="150" Margin="0,0,8,0" Style="{StaticResource PrimaryButton}" Command="{Binding ApplyCommand}"/>
+            <Button Content="{loc:T common.cancel}" IsCancel="True" Width="80" Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>

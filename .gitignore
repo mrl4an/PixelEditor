@@ -1,0 +1,43 @@
+# Сборка .NET
+bin/
+obj/
+publish/
+artifacts/
+*.nupkg
+*.snupkg
+
+# Visual Studio, Rider, VS Code
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.userprefs
+*.DotSettings.user
+
+# Результаты тестов и покрытие
+TestResults/
+*.trx
+coverage*.xml
+*.coverage
+
+# Данные приложения и автосохранения (в репозиторий не нужны)
+autosave.pixproj
+settings.json
+/.pixed-data/
+
+# Логи и временные файлы
+*.log
+*.tmp
+*.bak
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Рабочие папки агентов и локальные настройки Claude
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# Сборка для запуска PixelEditor.cmd
+/app/
+/tools/

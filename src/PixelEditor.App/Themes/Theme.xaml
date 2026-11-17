@@ -1,0 +1,16 @@
+<!--
+  Единая точка подключения оформления. Палитра (Palette.*.xaml) подключается отдельно в App.xaml и подменяется ThemeManager.
+  Чтобы оформить новый тип контрола, добавьте стиль в подходящий файл Controls/*.xaml: он применится ко всем окнам.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Metrics.xaml"/>
+        <ResourceDictionary Source="Icons.xaml"/>
+        <ResourceDictionary Source="Controls/Containers.xaml"/>
+        <ResourceDictionary Source="Controls/Buttons.xaml"/>
+        <ResourceDictionary Source="Controls/Inputs.xaml"/>
+        <ResourceDictionary Source="Controls/Lists.xaml"/>
+        <ResourceDictionary Source="Controls/Menus.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

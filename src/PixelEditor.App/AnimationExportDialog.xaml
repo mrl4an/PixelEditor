@@ -1,0 +1,66 @@
+<Window x:Class="PixelEditor.App.AnimationExportDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:PixelEditor.App.Localization"
+        SizeToContent="Height" Width="560" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <StackPanel Margin="18,16,18,16">
+        <TextBlock Text="{Binding Info}" Style="{StaticResource MutedText}" TextWrapping="Wrap" Margin="0,0,0,10"/>
+        <TextBlock Text="{loc:T anim_export.folder}"/>
+        <DockPanel Margin="0,4,0,10">
+            <Button DockPanel.Dock="Right" Content="{loc:T common.browse}" Margin="6,0,0,0" Command="{Binding BrowseCommand}"/>
+            <TextBox Text="{Binding Folder, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
+        <TextBlock Text="{loc:T anim_export.file_name}"/>
+        <TextBox Margin="0,4,0,12" Text="{Binding BaseName, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Text="{loc:T anim_export.always_png_sheet_optionally}" Style="{StaticResource SectionTitleText}" Margin="0,0,0,6"/>
+        <CheckBox Margin="0,0,0,6" IsChecked="{Binding Aseprite}" Content="{loc:T anim_export.unity_aseprite_format_json_aseprite}"
+                  ToolTip="{loc:T anim_export.frames_with_durations_and_animation.tip}"/>
+        <CheckBox Margin="0,0,0,6" IsChecked="{Binding Godot}" Content="{loc:T anim_export.godot_4_spriteframes_resource_tres}"
+                  ToolTip="{loc:T anim_export.ready_made_animations_for_animatedsprite2d.tip}"/>
+        <DockPanel Margin="22,0,0,6">
+            <TextBlock Text="{loc:T anim_export.path_to_the_png_in}" VerticalAlignment="Center" Margin="0,0,8,0" Style="{StaticResource MutedText}"/>
+            <TextBox Text="{Binding GodotTexturePath, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
+        <CheckBox Margin="0,0,0,6" IsChecked="{Binding Gif}" Content="{loc:T anim_export.gif_one_file_per_direction}"/>
+        <CheckBox Margin="0,0,0,6" IsChecked="{Binding Simple}" Content="{loc:T anim_export.plain_json_for_your_own}"/>
+        <CheckBox Margin="0,0,0,0" IsChecked="{Binding Unity}" Content="{loc:T anim_export.unity_editor_script}"
+                  ToolTip="{loc:T anim_export.unity_editor_script.tip}"/>
+
+        <StackPanel Margin="0,12,0,0">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Loops.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            <TextBlock Text="{loc:T anim_export.loop_per_animation}" Style="{StaticResource SectionTitleText}" Margin="0,0,0,4"/>
+            <ItemsControl ItemsSource="{Binding Loops}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox Margin="0,0,16,4" IsChecked="{Binding Loop}" Content="{Binding Name}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+
+        <Border Background="{DynamicResource Brush.Surface2}" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1" CornerRadius="{DynamicResource Radius.Control}" Padding="10,8" Margin="0,12,0,0">
+            <StackPanel>
+                <TextBlock Text="{loc:T anim_export.how_to_use_in_unity}" Style="{StaticResource SectionTitleText}"/>
+                <TextBlock Text="{Binding HowTo}" Style="{StaticResource CaptionText}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+            </StackPanel>
+        </Border>
+        <TextBlock Style="{StaticResource ErrorText}" Margin="0,8,0,0" Text="{Binding Error}"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Content="{loc:T anim_export.export}" IsDefault="True" MinWidth="120" Margin="0,0,8,0" Style="{StaticResource PrimaryButton}" Command="{Binding OkCommand}"/>
+            <Button Content="{loc:T common.cancel}" IsCancel="True" Width="80" Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

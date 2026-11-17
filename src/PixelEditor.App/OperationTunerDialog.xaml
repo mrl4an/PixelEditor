@@ -1,0 +1,92 @@
+﻿<Window x:Class="PixelEditor.App.OperationTunerDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:PixelEditor.App.Localization"
+        Width="940" Height="660" MinWidth="720" MinHeight="520" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <Grid Margin="18,16,18,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="340" MinWidth="280"/>
+            <ColumnDefinition Width="16"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left: the operation and its parameters -->
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{loc:T tuner.operation}" Style="{StaticResource DialogHeadingText}"/>
+            <ComboBox Grid.Row="1" ItemsSource="{Binding Choices}" SelectedItem="{Binding SelectedChoice}" DisplayMemberPath="Display"/>
+            <TextBlock Grid.Row="2" Text="{Binding Description}" TextWrapping="Wrap" Style="{StaticResource MutedText}" Margin="0,8,0,10" MaxHeight="150"/>
+            <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="{loc:T tuner.parameters}" Style="{StaticResource DialogHeadingText}"/>
+                    <ItemsControl ItemsSource="{Binding Parameters}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,2" ToolTip="{Binding Tooltip}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="110"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Style="{StaticResource MonoText}"/>
+                                    <TextBox Grid.Column="1" Style="{StaticResource MonoTextBox}" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+            <StackPanel Grid.Row="4" Margin="0,8,0,0">
+                <TextBlock Text="{loc:T tuner.json}" Style="{StaticResource CaptionText}"/>
+                <TextBox IsReadOnly="True" Text="{Binding ArgsJson, Mode=OneWay}" Style="{StaticResource MonoTextBox}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                <Button Content="{loc:T tuner.reset}" Command="{Binding ResetCommand}" HorizontalAlignment="Left" Padding="12,4" Margin="0,8,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Right: Before / After -->
+        <Grid Grid.Row="0" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{loc:T chat.before}" Style="{StaticResource DialogHeadingText}"/>
+            <TextBlock Grid.Column="2" Text="{loc:T chat.after}" Style="{StaticResource DialogHeadingText}"/>
+            <Border Grid.Row="1" Background="{DynamicResource Brush.Field}" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1" ClipToBounds="True">
+                <Border Background="{DynamicResource Brush.CheckerLarge}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="{Binding Before, Converter={StaticResource PixelBitmap}}" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Uniform"/>
+                </Border>
+            </Border>
+            <Border Grid.Row="1" Grid.Column="2" Background="{DynamicResource Brush.Field}" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1" ClipToBounds="True">
+                <Border Background="{DynamicResource Brush.CheckerLarge}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="{Binding After, Converter={StaticResource PixelBitmap}}" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Uniform"/>
+                </Border>
+            </Border>
+            <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Margin="0,8,0,0">
+                <TextBlock Text="{Binding Summary}" TextWrapping="Wrap" Style="{StaticResource SectionTitleText}"/>
+                <TextBlock Text="{Binding Error}" TextWrapping="Wrap" Style="{StaticResource ErrorText}"
+                           Visibility="{Binding HasError, Converter={StaticResource BoolVisible}}"/>
+                <TextBlock Text="{loc:T tuner.hint}" TextWrapping="Wrap" Style="{StaticResource MutedText}" Margin="0,4,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
+            <Button Content="{loc:T tuner.apply}" MinWidth="130" Margin="0,0,8,0" Style="{StaticResource PrimaryButton}" Command="{Binding ApplyCommand}"/>
+            <Button Content="{loc:T common.cancel}" IsCancel="True" Width="80" Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>

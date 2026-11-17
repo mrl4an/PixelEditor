@@ -1,0 +1,73 @@
+﻿<Window x:Class="PixelEditor.App.BatchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:PixelEditor.App.Localization"
+        Width="860" Height="600" MinWidth="680" MinHeight="460" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <Grid Margin="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="{loc:T batch.template}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+        <ComboBox Grid.Column="1" ItemsSource="{Binding Templates}" SelectedItem="{Binding SelectedTemplate}" DisplayMemberPath="Name" Margin="0,0,8,8"/>
+        <Button Grid.Column="2" Content="{loc:T common.browse}" Margin="0,0,0,8" Command="{Binding BrowseTemplateCommand}"/>
+
+        <TextBlock Grid.Row="1" Text="{loc:T batch.images_folder}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,8,8" Text="{Binding InputDir, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Row="1" Grid.Column="2" Content="{loc:T common.browse}" Margin="0,0,0,8" Command="{Binding BrowseInputCommand}"/>
+
+        <TextBlock Grid.Row="2" Text="{loc:T batch.output_folder}" VerticalAlignment="Center" Margin="0,0,0,8"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="0,0,8,8" Text="{Binding OutputDir, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Row="2" Grid.Column="2" Content="{loc:T common.browse}" Margin="0,0,0,8" Command="{Binding BrowseOutputCommand}"/>
+
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,2,0,12">
+            <CheckBox Content="{loc:T batch.include_subfolders}" IsChecked="{Binding Recurse}" VerticalAlignment="Center"/>
+            <Button Content="{loc:T batch.run}" IsDefault="True" Style="{StaticResource PrimaryButton}" Padding="20,3" Margin="18,0,12,0"
+                    Command="{Binding RunCommand}"/>
+            <TextBlock Text="{Binding Summary}" Style="{StaticResource SectionTitleText}" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <ListView Grid.Row="4" Grid.ColumnSpan="3" ItemsSource="{Binding Rows}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="{loc:T batch.file}" Width="250" DisplayMemberBinding="{Binding File}"/>
+                    <GridViewColumn Header="{loc:T batch.status}" Width="190">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border x:Name="Badge" Style="{StaticResource StatusBadge}" HorizontalAlignment="Left">
+                                    <TextBlock x:Name="Label" Text="{Binding Status}" Style="{StaticResource CaptionText}"/>
+                                </Border>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Kind}" Value="ok">
+                                        <Setter TargetName="Badge" Property="Background" Value="{DynamicResource Brush.SuccessBackground}"/>
+                                        <Setter TargetName="Label" Property="Foreground" Value="{DynamicResource Brush.Success}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Kind}" Value="error">
+                                        <Setter TargetName="Label" Property="Foreground" Value="{DynamicResource Brush.Danger}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Kind}" Value="checks_failed">
+                                        <Setter TargetName="Label" Property="Foreground" Value="{DynamicResource Brush.Danger}"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="{loc:T batch.details}" Width="360" DisplayMemberBinding="{Binding Details}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Button Grid.Row="5" Grid.ColumnSpan="3" Content="{loc:T common.close}" IsCancel="True" HorizontalAlignment="Right" Margin="0,12,0,0"
+                Width="90" Command="{Binding CancelCommand}"/>
+    </Grid>
+</Window>

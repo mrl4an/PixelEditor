@@ -1,0 +1,25 @@
+<!--
+  Векторные иконки инструментов (как SVG: контуры в системе координат 24×24). Применение: ui:Ui.IconData="{StaticResource Icon.Pencil}" на кнопке со стилем ToolButtonStyle.
+  Линейные иконки рисуются цветом текста (серый, у активного инструмента акцентный). Для заливных иконок добавьте ui:Ui.IconFilled="True".
+  Новая иконка: нарисуйте контур в рамке 24×24 (поля около 3), толщина линии 1.7 задана стилем.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Geometry x:Key="Icon.Pencil">M4 20 L5.2 15.2 L16 4.4 Q17 3.6 18 4.4 L19.6 6 Q20.4 7 19.6 8 L8.8 18.8 Z M14 6.4 L17.6 10</Geometry>
+    <Geometry x:Key="Icon.Eraser">M4.5 15 L13.5 6 Q14.2 5.3 15 6 L19 10 Q19.7 10.7 19 11.5 L11.5 19 H7.5 Z M8.5 11 L14 16.5 M11.5 19 H20</Geometry>
+    <Geometry x:Key="Icon.Bucket">M3.5 12 L10.5 5 L17.5 12 L10.5 19 Z M6.5 9 H14.5 M19.5 14.5 C19.5 16.3 18 17 18 18.2 A1.5 1.5 0 0 0 21 18.2 C21 17 19.5 16.3 19.5 14.5 Z</Geometry>
+    <Geometry x:Key="Icon.Dropper">M15.5 4.5 L19.5 8.5 M17 3 L21 7 L18.6 9.4 L14.6 5.4 Z M14 8 L5.5 16.5 L5 19 L7.5 18.5 L16 10</Geometry>
+    <Geometry x:Key="Icon.Line">M5 19 L19 5 M3 17 H7 V21 H3 Z M17 3 H21 V7 H17 Z</Geometry>
+    <Geometry x:Key="Icon.Rect">M4.5 6.5 H19.5 V17.5 H4.5 Z</Geometry>
+    <Geometry x:Key="Icon.Ellipse">M3.5 12 A8.5 6.5 0 1 0 20.5 12 A8.5 6.5 0 1 0 3.5 12 Z</Geometry>
+    <Geometry x:Key="Icon.Select">M4 9 V4 H9 M15 4 H20 V9 M20 15 V20 H15 M9 20 H4 V15</Geometry>
+    <Geometry x:Key="Icon.Move">M12 3 V21 M3 12 H21 M12 3 L9 6 M12 3 L15 6 M12 21 L9 18 M12 21 L15 18 M3 12 L6 9 M3 12 L6 15 M21 12 L18 9 M21 12 L18 15</Geometry>
+    <Geometry x:Key="Icon.BgEraser">M4.5 15 L13.5 6 Q14.2 5.3 15 6 L19 10 Q19.7 10.7 19 11.5 L11.5 19 H7.5 Z M3 21 H8 M11 21 H13 M16 21 H21 M18 3 L18.9 5.6 L21.5 6.5 L18.9 7.4 L18 10 L17.1 7.4 L14.5 6.5 L17.1 5.6 Z</Geometry>
+    <Geometry x:Key="Icon.Wand">M4 20 L14.5 9.5 M18 3 L18.9 5.6 L21.5 6.5 L18.9 7.4 L18 10 L17.1 7.4 L14.5 6.5 L17.1 5.6 Z M7 4 V7 M5.5 5.5 H8.5</Geometry>
+    <Geometry x:Key="Icon.Lasso">M12 4.5 C6.5 4.5 3 7 3 10 C3 13 6.5 15 11 15 C15.5 15 20 13 20 10 C20 7 17.5 4.5 12 4.5 Z M11 15 C11 17.5 9.5 18.5 8 20 H6</Geometry>
+    <Geometry x:Key="Icon.Polygon">M4.5 17.5 L4 8.5 L12 4 L20 9.5 L17.5 19 Z M2.5 16 H6 V19.5 H2.5 Z M10.5 2.5 H13.5 V5.5 H10.5 Z M18.5 8 H21.5 V11 H18.5 Z M16 17.5 H19.5 V21 H16 Z</Geometry>
+    <Geometry x:Key="Icon.Gradient">M4.5 5.5 H19.5 V18.5 H4.5 Z M9 5.5 V18.5 M12 5.5 V18.5 M14.5 5.5 V18.5 M16.5 5.5 V18.5</Geometry>
+    <!-- filled: -->
+    <Geometry x:Key="Icon.Shade">F0 M12 3.2 A8.8 8.8 0 1 0 12.01 3.2 Z M12 4.8 A7.2 7.2 0 1 1 11.99 4.8 Z M12 6 A6 6 0 0 0 12 18 Z</Geometry>
+    <Geometry x:Key="Icon.Text">M5 5 H19 V8.5 H13.7 V19 H10.3 V8.5 H5 Z</Geometry>
+</ResourceDictionary>

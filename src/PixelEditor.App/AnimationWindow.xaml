@@ -1,0 +1,64 @@
+<Window x:Class="PixelEditor.App.AnimationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:PixelEditor.App.Localization"
+        Width="540" Height="680" MinWidth="460" MinHeight="580" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1" CornerRadius="{DynamicResource Radius.Small}"
+                Background="{StaticResource Brush.CheckerLarge}" ClipToBounds="True">
+            <Image Source="{Binding CurrentFrame, Converter={StaticResource PixelBitmap}}" Stretch="Uniform" Margin="12"
+                   RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased"/>
+        </Border>
+
+        <DockPanel Grid.Row="1" Margin="0,10,0,0">
+            <TextBlock Text="{Binding FrameLabel}" DockPanel.Dock="Right" Style="{StaticResource MutedText}" MinWidth="60" TextAlignment="Right"/>
+            <TextBlock Text="{loc:T animation.frame}" Style="{StaticResource MutedText}"/>
+        </DockPanel>
+
+        <Slider Grid.Row="2" Minimum="0" Maximum="{Binding MaxIndex}" TickFrequency="1" IsSnapToTickEnabled="True"
+                Value="{Binding FrameValue}" IsEnabled="{Binding CanScrub}" Margin="0,2,0,0"/>
+
+        <StackPanel Grid.Row="3" Margin="0,10,0,0">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="{Binding PlayButtonText}" Command="{Binding PlayCommand}" Style="{StaticResource PrimaryButton}" Width="84"/>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding UsesFps, Converter={StaticResource BoolVisible}}">
+                    <TextBlock Text="{loc:T animation.frames_per_second}" VerticalAlignment="Center" Margin="14,0,6,0"/>
+                    <TextBox Width="52" Text="{Binding FpsText, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <CheckBox Content="{loc:T animation.loop}" IsChecked="{Binding Loop}" Margin="14,0,0,0" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding HasRows, Converter={StaticResource BoolVisible}}">
+                    <TextBlock Text="{loc:T animation.row}" VerticalAlignment="Center" Margin="14,0,6,0"/>
+                    <ComboBox Width="130" ItemsSource="{Binding RowNames}" SelectedIndex="{Binding SelectedRowIndex}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Visibility="{Binding UsesSheetDelays, Converter={StaticResource BoolVisible}}" Margin="0,10,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{loc:T animation.delay_of_this_frame_s}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <TextBox Width="60" Text="{Binding FrameDelayText, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="{loc:T animation.for_row}" Margin="8,0,0,0" Command="{Binding ApplyToRowCommand}" ToolTip="{loc:T animation.set_this_delay_for_all.tip}"/>
+                    <Button Content="{loc:T animation.for_all}" Margin="6,0,0,0" Command="{Binding ApplyToAllCommand}" ToolTip="{loc:T animation.set_this_delay_for_all.tip_2}"/>
+                </StackPanel>
+                <DockPanel Margin="0,8,0,0">
+                    <Button DockPanel.Dock="Right" Content="{loc:T animation.save_delays_to_sheet}" Command="{Binding SaveDelaysCommand}"/>
+                    <TextBlock Text="{Binding RowSummary}" Style="{StaticResource CaptionText}" VerticalAlignment="Center"/>
+                </DockPanel>
+            </StackPanel>
+        </StackPanel>
+
+        <DockPanel Grid.Row="4" Margin="0,12,0,0">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Content="{loc:T animation.export_gif}" Command="{Binding ExportGifCommand}" Margin="0,0,8,0"/>
+                <Button Content="{loc:T common.close}" IsCancel="True" Command="{Binding CancelCommand}"/>
+            </StackPanel>
+            <TextBlock Text="{Binding SourceDescription}" Style="{StaticResource CaptionText}" VerticalAlignment="Center" Margin="0,0,12,0"/>
+        </DockPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,17 @@
+{"size":[32,32],"outline":"#2B1B17",
+ "palette":{"fur":"#E8923A","dark":"#B5651D","belly":"#FFE2B8","ink":"#2B1B17","eye":"#7BD88F","pink":"#F4A0A0"},
+ "items":[
+  {"line":[24,27,29,23],"color":"fur","thickness":3},
+  {"line":[29,23,28,18],"color":"fur","thickness":3},
+  {"ellipse":[8,16,16,14],"color":"fur"},
+  {"ellipse":[11,20,10,9],"color":"belly"},
+  {"rect":[9,27,5,4],"color":"fur","mirror":"x"},
+  {"poly":[[7,11],[7,2],[14,6]],"color":"fur","mirror":"x"},
+  {"ellipse":[6,5,20,15],"color":"fur"},
+  {"poly":[[8,8],[8,5],[11,6]],"color":"pink","mirror":"x"},
+  {"rect":[15,6,2,4],"color":"dark"},
+  {"rect":[11,7,1,3],"color":"dark","mirror":"x"},
+  {"rect":[10,12,3,3],"color":"eye","mirror":"x"},
+  {"rect":[11,12,1,3],"color":"ink","mirror":"x"},
+  {"pixels":[[15,16],[16,16]],"color":"pink"},
+  {"pixels":[[14,18],[15,17],[16,17],[17,18]],"color":"ink"}]}

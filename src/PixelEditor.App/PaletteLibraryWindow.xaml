@@ -1,0 +1,93 @@
+﻿<Window x:Class="PixelEditor.App.PaletteLibraryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:PixelEditor.App.Localization"
+        xmlns:local="clr-namespace:PixelEditor.App"
+        Width="820" Height="560" MinWidth="700" MinHeight="460" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <Grid Margin="14">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="14"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.ColumnSpan="3" Text="{Binding CurrentInfo}" Style="{StaticResource MutedText}" Margin="0,0,0,10"/>
+
+        <DockPanel Grid.Row="1">
+        <Button DockPanel.Dock="Top" Content="{loc:T palette_lib.add_palette}" Margin="0,0,0,8" Command="{Binding AddNewCommand}"
+                ToolTip="{loc:T palette_lib.create_your_own_palette_name.tip}"/>
+        <ListBox x:Name="List" ItemsSource="{Binding Items}" SelectedItem="{Binding Selected}" HorizontalContentAlignment="Stretch"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="2,3">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Right" Text="{Binding Summary}" Style="{StaticResource CaptionText}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Name}" Style="{StaticResource SectionTitleText}" TextTrimming="CharacterEllipsis" Margin="0,0,8,0"/>
+                        </DockPanel>
+                        <local:SwatchStrip Colors="{Binding Colors}" SwatchSize="9" Margin="0,4,0,0" MaxHeight="22"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        </DockPanel>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="{Binding Selected.Name}" Style="{StaticResource DetailTitleText}"/>
+                <TextBlock Text="{Binding Selected.Summary}" Style="{StaticResource CaptionText}" Margin="0,2,0,0"/>
+                <TextBlock Text="{Binding Selected.Description}" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                <ListBox ItemsSource="{Binding Selected.Colors}" SelectedItem="{Binding SelectedColor}" ItemContainerStyle="{StaticResource SwatchItemStyle}" Margin="-2,12,0,0"
+                         BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="22" Height="22" Background="{Binding Converter={StaticResource ColorBrush}}" BorderBrush="#55000000" BorderThickness="1"
+                                    CornerRadius="2" ToolTip="{Binding Converter={StaticResource ColorHex}}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <TextBlock Text="{Binding SystemHint}" Style="{StaticResource MutedText}" TextWrapping="Wrap" Margin="0,12,0,0"/>
+
+                <TextBlock Text="{loc:T palette_lib.to_project}" Style="{StaticResource SectionTitleText}" Margin="0,18,0,6"/>
+                <WrapPanel>
+                    <Button Content="{loc:T palette_lib.replace_the_project_palette}" Style="{StaticResource PrimaryButton}" Padding="14,3" Margin="0,0,6,6"
+                            Command="{Binding UseCommand}"/>
+                    <Button Content="{loc:T palette_lib.add_colors_to_the_palette}" Margin="0,0,6,6" Command="{Binding AppendCommand}"/>
+                </WrapPanel>
+
+                <TextBlock Text="{loc:T palette_lib.library}" Style="{StaticResource SectionTitleText}" Margin="0,12,0,6"/>
+                <WrapPanel>
+                    <Button Content="{loc:T palette_lib.save_project_palette}" Margin="0,0,6,6" Command="{Binding SaveCurrentCommand}"/>
+                    <Button Content="{loc:T palette_lib.make_a_copy}" Margin="0,0,6,6" Command="{Binding DuplicateCommand}"/>
+                    <Button Content="{loc:T palette_lib.primary_color}" Margin="0,0,6,6" Command="{Binding AddColorCommand}"
+                            ToolTip="{loc:T palette_lib.add_the_primary_color_from.tip}"/>
+                    <Button Content="{loc:T palette_lib.remove_selected_color}" Margin="0,0,6,6" Command="{Binding RemoveColorCommand}"
+                            ToolTip="{loc:T palette_lib.remove_the_color_selected_in.tip}"/>
+                    <Button Content="{loc:T palette_lib.name_and_description}" Margin="0,0,6,6" Command="{Binding EditCommand}"/>
+                    <Button Content="{loc:T palette_lib.update_with_project_colors}" Margin="0,0,6,6" Command="{Binding UpdateColorsCommand}"/>
+                    <Button Content="{loc:T common.delete}" Margin="0,0,6,6" Command="{Binding DeleteCommand}"/>
+                </WrapPanel>
+
+                <TextBlock Text="{loc:T common.files}" Style="{StaticResource SectionTitleText}" Margin="0,12,0,6"/>
+                <WrapPanel>
+                    <Button Content="{loc:T palette_lib.import_hex_gpl}" Margin="0,0,6,6" Command="{Binding ImportCommand}"/>
+                    <Button Content="{loc:T common.export}" Margin="0,0,6,6" Command="{Binding ExportCommand}"/>
+                    <Button Content="{loc:T palette_lib.palettes_folder}" Margin="0,0,6,6" Command="{Binding OpenFolderCommand}"/>
+                </WrapPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <DockPanel Grid.Row="2" Grid.ColumnSpan="3" Margin="0,12,0,0">
+            <Button DockPanel.Dock="Right" Content="{loc:T common.close}" IsCancel="True" Width="90" Command="{Binding CancelCommand}"/>
+            <TextBlock Text="{Binding Message}" Style="{StaticResource MutedText}" VerticalAlignment="Center"/>
+        </DockPanel>
+    </Grid>
+</Window>

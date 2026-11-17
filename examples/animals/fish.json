@@ -1,0 +1,11 @@
+{"size":[34,20],"outline":"#10233D",
+ "palette":{"body":"#3FA7E0","belly":"#BDE6F7","fin":"#1F6FB5","ink":"#10233D","white":"#FFFFFF"},
+ "items":[
+  {"poly":[[22,10],[31,3],[31,17]],"color":"fin"},
+  {"ellipse":[2,4,23,13],"color":"body"},
+  {"ellipse":[5,11,17,5],"color":"belly"},
+  {"poly":[[10,5],[15,0],[18,5]],"color":"fin"},
+  {"poly":[[11,14],[14,18],[17,14]],"color":"fin"},
+  {"rect":[18,6,2,8],"color":"fin"},
+  {"rect":[6,8,3,3],"color":"white"},{"pixels":[[7,9]],"color":"ink"},
+  {"line":[3,13,5,13],"color":"ink"}]}

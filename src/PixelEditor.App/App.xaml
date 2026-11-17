@@ -1,0 +1,61 @@
+﻿<Application x:Class="PixelEditor.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PixelEditor.App"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- The palette dictionary comes first: ThemeManager swaps it when the theme changes -->
+                <ResourceDictionary Source="Themes/Palette.Dark.xaml"/>
+                <ResourceDictionary Source="Themes/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <local:UIntToBrushConverter x:Key="ColorBrush"/>
+            <local:UIntToHexConverter x:Key="ColorHex"/>
+            <local:EnumBoolConverter x:Key="EnumBool"/>
+            <local:ToolIconConverter x:Key="ToolIcon"/>
+            <local:PixelImageToBitmapConverter x:Key="PixelBitmap"/>
+            <BooleanToVisibilityConverter x:Key="BoolVisible"/>
+
+            <!-- Transparency checkerboard (colors from the layout). Small: 6px cell, Large: 12px cell. -->
+            <DrawingBrush x:Key="Brush.CheckerSmall" TileMode="Tile" Viewport="0,0,12,12" ViewportUnits="Absolute"
+                          Viewbox="0,0,12,12" ViewboxUnits="Absolute">
+                <DrawingBrush.Drawing>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="#D4D4D4">
+                            <GeometryDrawing.Geometry><RectangleGeometry Rect="0,0,12,12"/></GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="#BDBDBD">
+                            <GeometryDrawing.Geometry>
+                                <GeometryGroup>
+                                    <RectangleGeometry Rect="0,0,6,6"/>
+                                    <RectangleGeometry Rect="6,6,6,6"/>
+                                </GeometryGroup>
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+                </DrawingBrush.Drawing>
+            </DrawingBrush>
+
+            <DrawingBrush x:Key="Brush.CheckerLarge" TileMode="Tile" Viewport="0,0,24,24" ViewportUnits="Absolute"
+                          Viewbox="0,0,24,24" ViewboxUnits="Absolute">
+                <DrawingBrush.Drawing>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="#D4D4D4">
+                            <GeometryDrawing.Geometry><RectangleGeometry Rect="0,0,24,24"/></GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="#BDBDBD">
+                            <GeometryDrawing.Geometry>
+                                <GeometryGroup>
+                                    <RectangleGeometry Rect="0,0,12,12"/>
+                                    <RectangleGeometry Rect="12,12,12,12"/>
+                                </GeometryGroup>
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+                </DrawingBrush.Drawing>
+            </DrawingBrush>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

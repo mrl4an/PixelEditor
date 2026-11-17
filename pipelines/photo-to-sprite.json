@@ -1,0 +1,22 @@
+{
+  "name": "photo-to-sprite",
+  "description": "Внешняя картинка в спрайт до 32 px: даунскейл, 16 цветов, чистка мусора, чёрный контур. Результат проверяется.",
+  "steps": [
+    { "op": "alphaThreshold", "value": 128 },
+    { "op": "trim" },
+    { "op": "resize", "width": 32, "height": 32, "method": "box" },
+    { "op": "alphaThreshold", "value": 128 },
+    { "op": "quantize", "colors": 16 },
+    { "op": "mergeRareColors", "minCount": 3 },
+    { "op": "removeIslands", "maxSize": 2 },
+    { "op": "fillHoles", "maxSize": 2 },
+    { "op": "outline", "color": "#000000", "mode": "outside", "diagonal": false }
+  ],
+  "checks": [
+    { "check": "maxColors", "value": 17 },
+    { "check": "size", "maxWidth": 34, "maxHeight": 34 },
+    { "check": "binaryAlpha" },
+    { "check": "noIslands", "maxSize": 2 },
+    { "check": "connected", "required": false }
+  ]
+}

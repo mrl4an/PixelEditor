@@ -1,0 +1,42 @@
+<Window x:Class="PixelEditor.App.CanvasSizeDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:PixelEditor.App.Localization"
+        SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <StackPanel Margin="16" MinWidth="280" FocusManager.FocusedElement="{Binding ElementName=WidthBox}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{loc:T common.width}" VerticalAlignment="Center" Margin="0,0,12,8"/>
+            <TextBox x:Name="WidthBox" Grid.Column="1" Margin="0,0,0,8" Text="{Binding WidthText, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="{loc:T common.height}" Grid.Row="1" VerticalAlignment="Center" Margin="0,0,12,0"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding HeightText, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+
+        <TextBlock Text="{loc:T canvas_size.content_anchor}" Style="{StaticResource MutedText}" Margin="0,14,0,4"/>
+        <UniformGrid Rows="3" Columns="3" Width="132" Height="96" HorizontalAlignment="Left">
+            <RadioButton Style="{StaticResource ChipStyle}" GroupName="A" Content="↖" IsChecked="{Binding Anchor, Converter={StaticResource EnumBool}, ConverterParameter=TopLeft}"/>
+            <RadioButton Style="{StaticResource ChipStyle}" GroupName="A" Content="↑" IsChecked="{Binding Anchor, Converter={StaticResource EnumBool}, ConverterParameter=Top}"/>
+            <RadioButton Style="{StaticResource ChipStyle}" GroupName="A" Content="↗" IsChecked="{Binding Anchor, Converter={StaticResource EnumBool}, ConverterParameter=TopRight}"/>
+            <RadioButton Style="{StaticResource ChipStyle}" GroupName="A" Content="←" IsChecked="{Binding Anchor, Converter={StaticResource EnumBool}, ConverterParameter=Left}"/>
+            <RadioButton Style="{StaticResource ChipStyle}" GroupName="A" Content="•" IsChecked="{Binding Anchor, Converter={StaticResource EnumBool}, ConverterParameter=Center}"/>
+            <RadioButton Style="{StaticResource ChipStyle}" GroupName="A" Content="→" IsChecked="{Binding Anchor, Converter={StaticResource EnumBool}, ConverterParameter=Right}"/>
+            <RadioButton Style="{StaticResource ChipStyle}" GroupName="A" Content="↙" IsChecked="{Binding Anchor, Converter={StaticResource EnumBool}, ConverterParameter=BottomLeft}"/>
+            <RadioButton Style="{StaticResource ChipStyle}" GroupName="A" Content="↓" IsChecked="{Binding Anchor, Converter={StaticResource EnumBool}, ConverterParameter=Bottom}"/>
+            <RadioButton Style="{StaticResource ChipStyle}" GroupName="A" Content="↘" IsChecked="{Binding Anchor, Converter={StaticResource EnumBool}, ConverterParameter=BottomRight}"/>
+        </UniformGrid>
+
+        <TextBlock Style="{StaticResource ErrorText}" Margin="0,8,0,0" Text="{Binding Error}"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
+            <Button Content="{loc:T common.apply}" IsDefault="True" Width="90" Margin="0,0,8,0" Style="{StaticResource PrimaryButton}"
+                    Command="{Binding OkCommand}"/>
+            <Button Content="{loc:T common.cancel}" IsCancel="True" Width="80" Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

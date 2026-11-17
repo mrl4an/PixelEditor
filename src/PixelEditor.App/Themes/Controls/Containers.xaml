@@ -1,0 +1,223 @@
+﻿<!--
+  Контейнеры и текст: Window, PanelSection (секция правой панели), GroupBox (рамка с заголовком), TabControl, текстовые стили.
+  Окна получают стиль Window автоматически (см. ThemeManager.Initialize), поэтому новые окна не нужно стилизовать вручную.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:PixelEditor.App.Localization"
+                    xmlns:ui="clr-namespace:PixelEditor.App.Themes"
+                    xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework">
+
+    <!--
+      Окно с собственным заголовком (WindowChrome): метка приложения, название, приглушённая подпись (ui:Ui.Subtitle),
+      дополнительные элементы (ui:Ui.TitleContent) и кнопки управления окном. Кнопки сворачивания и разворачивания
+      скрываются по ResizeMode, поэтому диалоги получают только кнопку закрытия.
+    -->
+    <Style TargetType="Window">
+        <Setter Property="Icon" Value="pack://application:,,,/PixelEditor;component/Assets/app.ico"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Font.Ui}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSize.Base}"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="shell:WindowChrome.WindowChrome">
+            <Setter.Value>
+                <shell:WindowChrome CaptionHeight="32" ResizeBorderThickness="6" GlassFrameThickness="0"
+                                    CornerRadius="0" UseAeroCaptionButtons="False"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Window">
+                    <Border x:Name="Root" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource Brush.BorderHi}"
+                            BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="32"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Border Background="{DynamicResource Brush.Surface}" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="0,0,0,1">
+                                <DockPanel LastChildFill="False">
+                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                        <ContentPresenter Content="{TemplateBinding ui:Ui.TitleContent}"/>
+                                        <Button x:Name="MinBtn" Style="{DynamicResource CaptionButtonStyle}" ui:Ui.WindowAction="Minimize"
+                                                Content="&#xE921;" ToolTip="{loc:T window.minimize.tip}"/>
+                                        <Button x:Name="MaxBtn" Style="{DynamicResource CaptionButtonStyle}" ui:Ui.WindowAction="Maximize"
+                                                Content="&#xE922;" ToolTip="{loc:T window.maximize.tip}"/>
+                                        <Button x:Name="CloseBtn" Style="{DynamicResource CloseCaptionButtonStyle}" ui:Ui.WindowAction="Close"
+                                                Content="&#xE8BB;" ToolTip="{loc:T common.close}"/>
+                                    </StackPanel>
+                                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
+                                        <Image Source="pack://application:,,,/PixelEditor;component/Assets/logo-64.png" Width="18" Height="18" Margin="0,0,9,0"
+                                               RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                                        <TextBlock Text="{TemplateBinding Title}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        <TextBlock x:Name="Subtitle" Text="{TemplateBinding ui:Ui.Subtitle}"
+                                                   Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource Brush.Muted}"
+                                                   FontSize="{DynamicResource FontSize.Small}"/>
+                                    </StackPanel>
+                                </DockPanel>
+                            </Border>
+
+                            <AdornerDecorator Grid.Row="1">
+                                <ContentPresenter/>
+                            </AdornerDecorator>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="WindowState" Value="Maximized">
+                            <!-- a maximized window with WindowChrome extends past the screen by the frame width: compensate with a margin -->
+                            <Setter TargetName="Root" Property="Margin" Value="{x:Static SystemParameters.WindowResizeBorderThickness}"/>
+                            <Setter TargetName="MaxBtn" Property="Content" Value="&#xE923;"/>
+                            <Setter TargetName="MaxBtn" Property="ToolTip" Value="{loc:T window.restore}"/>
+                        </Trigger>
+                        <Trigger Property="ResizeMode" Value="NoResize">
+                            <Setter TargetName="MinBtn" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="MaxBtn" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="ResizeMode" Value="CanMinimize">
+                            <Setter TargetName="MaxBtn" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger SourceName="Subtitle" Property="Text" Value="">
+                            <Setter TargetName="Subtitle" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Text styles: use them instead of coloring a TextBlock by hand -->
+    <Style x:Key="SectionTitleText" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}"/>
+    </Style>
+
+    <!-- Heading of a block inside a dialog (above a field, a preview, a list) -->
+    <Style x:Key="DialogHeadingText" TargetType="TextBlock" BasedOn="{StaticResource SectionTitleText}">
+        <Setter Property="Margin" Value="0,0,0,4"/>
+    </Style>
+
+    <!-- Large title of a detail pane (selected template or palette name) -->
+    <Style x:Key="DetailTitleText" TargetType="TextBlock" BasedOn="{StaticResource SectionTitleText}">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="MutedText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Muted}"/>
+    </Style>
+
+    <Style x:Key="CaptionText" TargetType="TextBlock" BasedOn="{StaticResource MutedText}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSize.Small}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="MonoText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource Font.Mono}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSize.Small}"/>
+    </Style>
+
+    <Style x:Key="ErrorText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Danger}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <!-- Right panel section: a 28px title strip and a body with margins. Header is the text, Content is the body. -->
+    <Style x:Key="PanelSection" TargetType="HeaderedContentControl">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="HeaderedContentControl">
+                    <Border BorderBrush="{DynamicResource Brush.Border}" BorderThickness="0,0,0,1">
+                        <StackPanel>
+                            <Border Background="{DynamicResource Brush.Surface2}" Height="{DynamicResource Size.SectionHeader}" Padding="9,0">
+                                <ContentPresenter ContentSource="Header" VerticalAlignment="Center" TextElement.FontWeight="SemiBold"/>
+                            </Border>
+                            <ContentPresenter Margin="{DynamicResource Padding.Section}"/>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Frame with a title on the line (fieldset) -->
+    <Style TargetType="GroupBox">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}"/>
+        <Setter Property="Padding" Value="8,6,8,8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="GroupBox">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.RowSpan="2" Margin="0,9,0,0" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1"
+                                CornerRadius="{DynamicResource Radius.Group}"/>
+                        <Border Background="{DynamicResource Brush.Surface}" HorizontalAlignment="Left" Margin="8,0,0,0" Padding="5,0">
+                            <ContentPresenter ContentSource="Header" TextElement.Foreground="{DynamicResource Brush.Muted}"
+                                              TextElement.FontWeight="SemiBold" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ContentPresenter Grid.Row="1" Margin="{TemplateBinding Padding}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Tabs -->
+    <Style TargetType="TabControl">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabControl">
+                    <DockPanel>
+                        <Border DockPanel.Dock="Top" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="0,0,0,1">
+                            <TabPanel IsItemsHost="True" Background="Transparent"/>
+                        </Border>
+                        <Border Padding="{TemplateBinding Padding}">
+                            <ContentPresenter ContentSource="SelectedContent"/>
+                        </Border>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="TabItem">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Muted}"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Border x:Name="Bd" Background="Transparent" BorderBrush="Transparent" BorderThickness="0,0,0,2" Padding="14,7"
+                            Margin="0,0,2,-1" SnapsToDevicePixels="True">
+                        <ContentPresenter ContentSource="Header" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Brush.Hover}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource Brush.Text}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Status icon in a table (Done / Waiting) -->
+    <Style x:Key="StatusBadge" TargetType="Border">
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="7,2"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface3}"/>
+    </Style>
+</ResourceDictionary>

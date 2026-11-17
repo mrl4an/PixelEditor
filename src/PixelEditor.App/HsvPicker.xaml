@@ -1,0 +1,61 @@
+<UserControl x:Class="PixelEditor.App.HsvPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:PixelEditor.App.Localization">
+    <!--
+      Compact HSV picker: a saturation/value square over a hue strip. The gradients are the picker's own content
+      (like the canvas), so their colors are literals, not theme tokens. The square is a hue-colored background with a
+      white horizontal and a black vertical gradient laid over it, which is cheap to render.
+    -->
+    <StackPanel>
+        <Border BorderBrush="{DynamicResource Brush.BorderHi}" BorderThickness="1" CornerRadius="3" ClipToBounds="True">
+            <Grid x:Name="Square" Height="84" Cursor="Cross" Background="Transparent"
+                  MouseLeftButtonDown="Square_Down" MouseMove="Square_Move" MouseLeftButtonUp="Drag_Up"
+                  ToolTip="{loc:T main.hsv_square.tip}">
+                <Rectangle x:Name="HueFill" IsHitTestVisible="False" Fill="Red"/>
+                <Rectangle IsHitTestVisible="False">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                            <GradientStop Color="#00FFFFFF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle IsHitTestVisible="False">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#00000000" Offset="0"/>
+                            <GradientStop Color="#FF000000" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Canvas IsHitTestVisible="False">
+                    <Ellipse x:Name="SquareMark" Width="10" Height="10" Stroke="#FFFFFFFF" StrokeThickness="2" Fill="Transparent"/>
+                    <Ellipse x:Name="SquareMarkOuter" Width="12" Height="12" Stroke="#99000000" StrokeThickness="1" Fill="Transparent"/>
+                </Canvas>
+            </Grid>
+        </Border>
+        <Border BorderBrush="{DynamicResource Brush.BorderHi}" BorderThickness="1" CornerRadius="3" ClipToBounds="True" Margin="0,5,0,0">
+            <Grid x:Name="Strip" Height="14" Cursor="SizeWE" Background="Transparent"
+                  MouseLeftButtonDown="Strip_Down" MouseMove="Strip_Move" MouseLeftButtonUp="Drag_Up"
+                  ToolTip="{loc:T main.hsv_hue.tip}">
+                <Rectangle IsHitTestVisible="False">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#FFFF0000" Offset="0"/>
+                            <GradientStop Color="#FFFFFF00" Offset="0.1667"/>
+                            <GradientStop Color="#FF00FF00" Offset="0.3333"/>
+                            <GradientStop Color="#FF00FFFF" Offset="0.5"/>
+                            <GradientStop Color="#FF0000FF" Offset="0.6667"/>
+                            <GradientStop Color="#FFFF00FF" Offset="0.8333"/>
+                            <GradientStop Color="#FFFF0000" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Canvas IsHitTestVisible="False">
+                    <Rectangle x:Name="StripMark" Width="4" Height="14" Stroke="#FFFFFFFF" StrokeThickness="1.5" Fill="Transparent" RadiusX="1" RadiusY="1"/>
+                </Canvas>
+            </Grid>
+        </Border>
+    </StackPanel>
+</UserControl>

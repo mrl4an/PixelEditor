@@ -1,0 +1,25 @@
+<!-- Sizes, fonts and radii (from the Figma layout). They do not depend on the theme. -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <FontFamily x:Key="Font.Ui">Segoe UI Variable, Segoe UI</FontFamily>
+    <FontFamily x:Key="Font.Mono">Consolas</FontFamily>
+
+    <sys:Double x:Key="FontSize.Base">13</sys:Double>
+    <sys:Double x:Key="FontSize.Small">11</sys:Double>
+
+    <CornerRadius x:Key="Radius.Control">4</CornerRadius>
+    <CornerRadius x:Key="Radius.Small">3</CornerRadius>
+    <CornerRadius x:Key="Radius.Group">5</CornerRadius>
+    <CornerRadius x:Key="Radius.Popup">6</CornerRadius>
+
+    <sys:Double x:Key="Size.Control">25</sys:Double>
+    <sys:Double x:Key="Size.Tool">32</sys:Double>
+    <sys:Double x:Key="Size.SectionHeader">28</sys:Double>
+    <sys:Double x:Key="Size.Row">25</sys:Double>
+
+    <Thickness x:Key="Padding.Button">8,3</Thickness>
+    <Thickness x:Key="Padding.Field">7,3</Thickness>
+    <Thickness x:Key="Padding.Section">8,7</Thickness>
+</ResourceDictionary>

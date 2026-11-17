@@ -1,0 +1,10 @@
+{
+  "name": "clean-sprite",
+  "description": "Почистить уже нарисованный пиксель-арт: мусор, дырки, редкие оттенки. Размер не меняется.",
+  "steps": [
+    { "op": "alphaThreshold", "value": 128 },
+    { "op": "mergeRareColors", "minCount": 4 },
+    { "op": "removeIslands", "maxSize": 1 },
+    { "op": "fillHoles", "maxSize": 1 }
+  ]
+}

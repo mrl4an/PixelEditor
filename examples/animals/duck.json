@@ -1,0 +1,11 @@
+{"size":[24,24],"outline":"#3A2A10",
+ "palette":{"body":"#FFD84A","wing":"#E6B422","beak":"#FF8A1F","ink":"#3A2A10"},
+ "items":[
+  {"poly":[[3,12],[0,9],[4,10]],"color":"body"},
+  {"ellipse":[2,9,17,12],"color":"body"},
+  {"ellipse":[5,12,8,6],"color":"wing"},
+  {"ellipse":[10,2,10,10],"color":"body"},
+  {"poly":[[19,6],[23,7],[19,9]],"color":"beak"},
+  {"pixels":[[16,5]],"color":"ink"},
+  {"line":[8,21,8,23],"color":"beak"},{"line":[13,21,13,23],"color":"beak"},
+  {"pixels":[[7,23],[9,23],[12,23],[14,23]],"color":"beak"}]}

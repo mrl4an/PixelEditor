@@ -1,0 +1,79 @@
+<Window x:Class="PixelEditor.App.RsiStateDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:PixelEditor.App.Localization"
+        SizeToContent="Height" Width="560" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <StackPanel Margin="18,16,18,16" FocusManager.FocusedElement="{Binding ElementName=NameBox}">
+        <!-- Layout template: a ready set of rows and frames (stand, step 1, step 2...), your own templates are saved -->
+        <StackPanel Visibility="{Binding HasTemplates, Converter={StaticResource BoolVisible}}" Margin="0,0,0,12">
+            <TextBlock Text="{loc:T rsi_state.layout_template_can_be_skipped}"/>
+            <DockPanel Margin="0,4,0,0">
+                <Button DockPanel.Dock="Right" Content="{loc:T common.delete}" Margin="6,0,0,0" Command="{Binding DeleteTemplateCommand}" ToolTip="{loc:T rsi_state.delete_custom_template.tip}"/>
+                <Button DockPanel.Dock="Right" Content="{loc:T rsi_state.save_as_template}" Margin="6,0,0,0" Command="{Binding SaveTemplateCommand}"
+                        ToolTip="{loc:T rsi_state.remember_the_current_rows_and.tip}"/>
+                <ComboBox ItemsSource="{Binding Templates}" SelectedItem="{Binding SelectedTemplate}" DisplayMemberPath="Name"/>
+            </DockPanel>
+            <TextBlock Text="{Binding TemplateInfo}" Style="{StaticResource CaptionText}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <TextBlock Text="{loc:T rsi_state.name_for_rsi_becomes_the}"/>
+        <TextBox x:Name="NameBox" Margin="0,4,0,12" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Text="{loc:T rsi_state.sheet_rows}"/>
+        <ComboBox Margin="0,4,0,0" ItemsSource="{Binding DirectionChoices}" SelectedItem="{Binding SelectedDirections}" DisplayMemberPath="Title"/>
+        <StackPanel Visibility="{Binding IsCustomLayout, Converter={StaticResource BoolVisible}}" Margin="0,8,0,0">
+            <TextBlock Text="{loc:T rsi_state.row_names_separated_by_commas}" Style="{StaticResource CaptionText}"/>
+            <TextBox Margin="0,4,0,0" Text="{Binding CustomRowsText, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
+        <Grid Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="{loc:T rsi_state.frames_per_row_1_no}"/>
+                <TextBox Margin="0,4,0,0" Text="{Binding FramesText, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="{loc:T rsi_state.frame_delay_seconds}"/>
+                <TextBox Margin="0,4,0,0" Text="{Binding DelayText, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Style="{StaticResource CaptionText}" TextWrapping="Wrap" Text="{Binding DelayInfo}"/>
+            </StackPanel>
+        </Grid>
+
+        <TextBlock Text="{loc:T rsi_state.frame_names_and_delays_optional}" Margin="0,12,0,0"/>
+        <TextBlock Style="{StaticResource CaptionText}" TextWrapping="Wrap" Margin="0,2,0,0"
+                   Text="{loc:T rsi_state.one_line_per_frame_stand}"/>
+        <TextBox Margin="0,4,0,0" Height="76" TextWrapping="NoWrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
+                 Style="{StaticResource MonoTextBox}" Text="{Binding FrameLinesText, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Grid Margin="0,12,0,0" Visibility="{Binding AskSize, Converter={StaticResource BoolVisible}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="{loc:T common.frame_width_px}"/>
+                <TextBox Margin="0,4,0,0" Text="{Binding FrameWidthText, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="{loc:T common.frame_height_px}"/>
+                <TextBox Margin="0,4,0,0" Text="{Binding FrameHeightText, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Grid>
+
+        <Border Background="{DynamicResource Brush.Surface2}" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1"
+                CornerRadius="{DynamicResource Radius.Control}" Padding="10,8" Margin="0,14,0,0">
+            <TextBlock Text="{Binding Summary}" TextWrapping="Wrap"/>
+        </Border>
+
+        <TextBlock Style="{StaticResource ErrorText}" Margin="0,8,0,0" Text="{Binding Error}"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Content="{loc:T rsi_state.create_sheet}" IsDefault="True" MinWidth="110" Margin="0,0,8,0" Style="{StaticResource PrimaryButton}" Command="{Binding OkCommand}"/>
+            <Button Content="{loc:T common.cancel}" IsCancel="True" Width="80" Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
