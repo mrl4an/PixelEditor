@@ -1,4 +1,4 @@
-﻿# Pixel Editor: guide for AI agents (how to use it without reading the project)
+# Pixel Editor: guide for AI agents (how to use it without reading the project)
 
 This file is for an agent that needs to **process, draw or export sprites**. Do not read the whole project: it wastes tokens and risks breaking something.
 If you are working on the project itself (code, tests, UI), read `AGENTS.md` in the repository root instead of this file. This file is self-contained: it needs no other project files.
